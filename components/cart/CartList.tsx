@@ -10,6 +10,7 @@ const productsInCart = [initialData.products[0], initialData.products[1], initia
 interface Props {
   editable?: boolean;
 }
+
 export const CartList: FC<Props> = ({ editable = false }) => {
   return (
     <>

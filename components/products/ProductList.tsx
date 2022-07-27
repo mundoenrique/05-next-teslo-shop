@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { Grid } from '@mui/material';
-
 import { IProduct } from '../../interfaces';
-import { ProductCard } from './';
+import { ProductCard } from '.';
 
 interface Props {
   products: IProduct[];
