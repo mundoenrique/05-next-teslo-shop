@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
-
-import { ShopLayout } from '../components/layuots/ShopLayout';
+import { ShopLayout } from '../components/layouts';
 
 const Custom404 = () => {
   return (

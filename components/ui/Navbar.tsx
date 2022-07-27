@@ -12,7 +12,9 @@ export const Navbar = () => {
             <Typography sx={{ ml: 0.5 }}>Shop</Typography>
           </Link>
         </NextLink>
+
         <Box flex={1} />
+
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <NextLink href="/category/men" passHref>
             <Link>
@@ -30,10 +32,13 @@ export const Navbar = () => {
             </Link>
           </NextLink>
         </Box>
+
         <Box flex={1} />
+
         <IconButton>
           <SearchOutlined />
         </IconButton>
+
         <NextLink href="/cart" passHref>
           <Link>
             <IconButton>
@@ -43,6 +48,7 @@ export const Navbar = () => {
             </IconButton>
           </Link>
         </NextLink>
+
         <Button>Menú</Button>
       </Toolbar>
     </AppBar>
