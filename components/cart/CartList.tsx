@@ -1,11 +1,17 @@
+import { FC } from 'react';
 import NextLink from 'next/link';
 import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
+
 import { initialData } from '../../database/products';
 import { ItemCounter } from '../ui';
 
+interface Props {
+  editable?: boolean;
+}
+
 const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
-export const CartList = () => {
+export const CartList: FC<Props> = ({ editable = false }) => {
   return (
     <>
       {productsInCart.map((product) => (
@@ -25,14 +31,16 @@ export const CartList = () => {
               <Typography variant="body1">
                 Talla: <strong>M</strong>
               </Typography>
-              <ItemCounter />
+              {editable ? <ItemCounter /> : <Typography variant="h5">3 Items</Typography>}
             </Box>
           </Grid>
           <Grid item xs={2} display="flex" alignItems="center" flexDirection="column">
             <Typography variant="subtitle2">{`$${product.price}`}</Typography>
-            <Button variant="text" color="secondary">
-              Remover
-            </Button>
+            {editable && (
+              <Button variant="text" color="secondary">
+                Remover
+              </Button>
+            )}
           </Grid>
         </Grid>
       ))}
