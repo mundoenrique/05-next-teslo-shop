@@ -1,4 +1,5 @@
 export * as db from './db';
-// Base d etados de prueba
+export * from './constants';
+
+// Base de datos de prueba
 export * as seedDatabase from './products';
-export * from './constans';

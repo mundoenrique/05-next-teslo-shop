@@ -12,7 +12,7 @@ const productSchema = new Schema(
         type: String,
         enum: {
           values: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-          message: '{VALUE} no es un tamaño permitido',
+          message: '{VALUE} no es un tamaño válido',
         },
       },
     ],
@@ -23,14 +23,14 @@ const productSchema = new Schema(
       type: String,
       enum: {
         values: ['shirts', 'pants', 'hoodies', 'hats'],
-        message: '{VALUE} no es un tipo permitido',
+        message: '{VALUE} no es un tipo válido',
       },
     },
     gender: {
       type: String,
       enum: {
         values: ['men', 'women', 'kid', 'unisex'],
-        message: '{VALUE} no es un género permitido',
+        message: '{VALUE} no es un genero válido',
       },
     },
   },

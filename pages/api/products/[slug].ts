@@ -9,8 +9,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   switch (req.method) {
     case 'GET':
       return getProductBySlug(req, res);
+
     default:
-      return res.status(400).json({ message: 'Bad Request' });
+      return res.status(400).json({
+        message: 'Bad request',
+      });
   }
 }
 
@@ -21,8 +24,10 @@ async function getProductBySlug(req: NextApiRequest, res: NextApiResponse<Data>)
   await db.disconnect();
 
   if (!product) {
-    return res.status(404).json({ message: 'Prodcuto no encontrado' });
+    return res.status(404).json({
+      message: 'Producto no encontrado',
+    });
   }
 
-  return res.status(200).json(product);
+  return res.json(product);
 }

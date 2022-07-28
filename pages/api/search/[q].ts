@@ -11,7 +11,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       return searchProducts(req, res);
 
     default:
-      return res.status(400).json({ message: 'Bad request' });
+      return res.status(400).json({
+        message: 'Bad request',
+      });
   }
 }
 
@@ -19,7 +21,9 @@ const searchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) =
   let { q = '' } = req.query;
 
   if (q.length === 0) {
-    return res.status(400).json({ message: 'Debe especificar el qury de búsqueda' });
+    return res.status(400).json({
+      message: 'Debe de especificar el query de búsqueda',
+    });
   }
 
   q = q.toString().toLowerCase();
@@ -30,6 +34,7 @@ const searchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) =
   })
     .select('title images price inStock slug -_id')
     .lean();
+
   await db.disconnect();
 
   return res.status(200).json(products);
