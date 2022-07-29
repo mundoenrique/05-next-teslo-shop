@@ -14,3 +14,5 @@ export const useProducts = (url: string, config: SWRConfiguration = {}) => {
     isError: error,
   };
 };
+
+// https://swr.vercel.app/es-ES/docs/global-configuration
