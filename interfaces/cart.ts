@@ -8,5 +8,5 @@ export interface ICartProduct {
   slug: string;
   title: string;
   gender: 'men' | 'women' | 'kid' | 'unisex';
-  quantiy: number;
+  quantity: number;
 }
