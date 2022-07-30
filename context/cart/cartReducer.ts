@@ -4,7 +4,8 @@ import { ICartProduct } from '../../interfaces';
 type CartActionType =
   | { type: '[Cart] - LoadCart from cookie | storage'; payload: ICartProduct[] }
   | { type: '[Cart] - update products in cart'; payload: ICartProduct[] }
-  | { type: '[Cart] - Change cart quantity'; payload: ICartProduct };
+  | { type: '[Cart] - Change cart quantity'; payload: ICartProduct }
+  | { type: '[Cart] - Remove product in cart'; payload: ICartProduct };
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
   switch (action.type) {
@@ -29,6 +30,21 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
 
           return action.payload;
         }),
+      };
+
+    case '[Cart] - Remove product in cart':
+      return {
+        ...state,
+        cart: state.cart.filter(
+          (product) => !(product._id === action.payload._id && product.size === action.payload.size)
+        ),
+        // cart: state.cart.filter((product) => {
+        //   if (product._id === action.payload._id && product.size === action.payload.size) {
+        //     return false;
+        //   }
+
+        //   return true;
+        // }),
       };
 
     default:
