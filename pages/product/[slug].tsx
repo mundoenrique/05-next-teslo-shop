@@ -1,20 +1,33 @@
-import { Box, Button, Chip, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
 import { NextPage, GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 
 import { ShopLayout } from '../../components/layouts';
 import { ProductSlideshow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui/ItemCounter';
 
 import { dbProducts } from '../../database';
-import { IProduct } from '../../interfaces';
+import { ICartProduct, IProduct, ISize } from '../../interfaces';
 
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
-  // const router = useRouter();
-  // const { products: product, isLoading } = useProducts(`/products/${router.query.slug}`);
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    image: product.images[0],
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantiy: 1,
+  });
+
+  const selectedSize = (size: ISize) => {
+    setTempCartProduct((currentProdcut) => ({ ...currentProdcut, size }));
+  };
 
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
@@ -38,15 +51,19 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               <SizeSelector
                 // selectedSize={ product.sizes[2] }
                 sizes={product.sizes}
+                selectedSize={tempCartProduct.size}
+                onSelectedSize={selectedSize}
               />
             </Box>
 
             {/* Agregar al carrito */}
-            <Button color="secondary" className="circular-btn">
-              Agregar al carrito
-            </Button>
-
-            {/* <Chip label="No hay disponibles" color="error" variant='outlined' /> */}
+            {product.inStock > 0 ? (
+              <Button color="secondary" className="circular-btn">
+                {tempCartProduct.size ? 'Agregar al carrito' : 'Selecina una talla'}
+              </Button>
+            ) : (
+              <Chip label="No hay disponibles" color="error" variant="outlined" />
+            )}
 
             {/* Descripción */}
             <Box sx={{ mt: 3 }}>
