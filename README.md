@@ -1,6 +1,6 @@
-# Next.js OpenJira
+# Next.js Telo Shop
 
-Para correr localmente, se necesita la base de datos
+Para correr localmente, se necesita la base de datos.
 
 ```
 docker-compose up -d
@@ -8,17 +8,24 @@ docker-compose up -d
 
 - El -d, significa **detached**
 
-- MongoDb URL Local:
-
-```
-mongodb://localhost:27018/teslodb
-```
-
 ## Configurar las variables de entorno
 
 Renombrar el archivo **.env.template** a **.env**
 
-## llenar la base de datos con información de pruebas
+- MongoDB URL Local:
+
+```
+MONGO_URL=mongodb://localhost:27017/teslodb
+```
+
+- Reconstruir los módulos de node y levantar Next
+
+```
+yarn install
+yarn dev
+```
+
+## Llenar la base de datos con información de pruebas
 
 Llamar a:
 
