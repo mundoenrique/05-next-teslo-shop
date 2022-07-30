@@ -1,4 +1,6 @@
-import { FC, useReducer } from 'react';
+import { FC, useEffect, useReducer } from 'react';
+import Cookie from 'js-cookie';
+
 import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 
@@ -16,6 +18,52 @@ const CART_INITIAL_STATE: CartState = {
 
 export const CartProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+  useEffect(() => {
+    try {
+      const cookieProducts = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [];
+      dispatch({ type: '[Cart] - LoadCart from cookie | storage', payload: cookieProducts });
+    } catch (error) {
+      dispatch({ type: '[Cart] - LoadCart from cookie | storage', payload: [] });
+    }
+  }, []);
 
-  return <CartContext.Provider value={{ ...state }}>{children}</CartContext.Provider>;
+  useEffect(() => {
+    Cookie.set('cart', JSON.stringify(state.cart));
+  }, [state.cart]);
+
+  const addProductTocart = (product: ICartProduct) => {
+    const productInCArt = state.cart.some((p) => p._id === product._id);
+    if (!productInCArt)
+      return dispatch({ type: '[Cart] - update products in cart', payload: [...state.cart, product] });
+
+    const productIncartButDifferetSize = state.cart.some((p) => p._id === product._id && p.size === product.size);
+    if (!productIncartButDifferetSize)
+      return dispatch({ type: '[Cart] - update products in cart', payload: [...state.cart, product] });
+
+    //Acumular
+    const updatedProducts = state.cart.map((p) => {
+      if (p._id !== product._id) return p;
+      if (p.size !== product.size) return p;
+
+      // Actualizar la cantidad
+      p.quantity += product.quantity;
+
+      return p;
+    });
+
+    return dispatch({ type: '[Cart] - update products in cart', payload: updatedProducts });
+  };
+
+  return (
+    <CartContext.Provider
+      value={{
+        ...state,
+
+        //Methods
+        addProductTocart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
