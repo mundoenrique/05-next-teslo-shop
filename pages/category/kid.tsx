@@ -2,12 +2,14 @@ import type { NextPage } from 'next';
 import { Typography } from '@mui/material';
 
 import { ShopLayout } from '../../components/layouts';
+
 import { ProductList } from '../../components/products';
 import { useProducts } from '../../hooks';
+
 import { FullScreenLoading } from '../../components/ui';
 
 const KidPage: NextPage = () => {
-  const { products, isLoading, isError } = useProducts('/products?gender=kid');
+  const { products, isLoading } = useProducts('/products?gender=kid');
 
   return (
     <ShopLayout title={'Teslo-Shop - Kids'} pageDescription={'Encuentra los mejores productos de Teslo para niños'}>
@@ -15,7 +17,7 @@ const KidPage: NextPage = () => {
         Niños
       </Typography>
       <Typography variant="h2" sx={{ mb: 1 }}>
-        Prductos para niños
+        Productos para niños
       </Typography>
 
       {isLoading ? <FullScreenLoading /> : <ProductList products={products} />}

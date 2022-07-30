@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
 
 import {
   Box,
@@ -27,19 +26,22 @@ import {
   VpnKeyOutlined,
 } from '@mui/icons-material';
 
-import { UiContext } from '../../context';
+import { UiContext } from '../../context/ui/UiContext';
+import { useRouter } from 'next/router';
 
 export const SideMenu = () => {
   const router = useRouter();
-  const { isMenuOpen, toogleSideMenu } = useContext(UiContext);
-  const [searchTerm, setSearchTerm] = useState('');
-  const onSerachTerm = () => {
-    if (searchTerm.trim().length === 0) return;
+  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const onSearchTerm = () => {
+    if (searchTerm.trim().length === 0) return;
     navigateTo(`/search/${searchTerm}`);
   };
+
   const navigateTo = (url: string) => {
-    toogleSideMenu();
+    toggleSideMenu();
     router.push(url);
   };
 
@@ -48,7 +50,7 @@ export const SideMenu = () => {
       open={isMenuOpen}
       anchor="right"
       sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
-      onClose={toogleSideMenu}
+      onClose={toggleSideMenu}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
@@ -57,12 +59,12 @@ export const SideMenu = () => {
               autoFocus
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={(e) => (e.key === 'Enter' ? onSerachTerm() : null)}
+              onKeyPress={(e) => (e.key === 'Enter' ? onSearchTerm() : null)}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={() => onSerachTerm()}>
+                  <IconButton onClick={onSearchTerm}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>

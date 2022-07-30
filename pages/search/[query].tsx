@@ -1,10 +1,12 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { Box, Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 import { ShopLayout } from '../../components/layouts';
+
 import { ProductList } from '../../components/products';
+
 import { dbProducts } from '../../database';
-import { IProduct } from '../../interfaces/products';
+import { IProduct } from '../../interfaces';
 
 interface Props {
   products: IProduct[];
@@ -18,16 +20,17 @@ const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
       <Typography variant="h1" component="h1">
         Buscar productos
       </Typography>
+
       {foundProducts ? (
         <Typography variant="h2" sx={{ mb: 1 }} textTransform="capitalize">
-          Término {query}
+          Término: {query}
         </Typography>
       ) : (
         <Box display="flex">
           <Typography variant="h2" sx={{ mb: 1 }}>
-            No encontramos ningún producto
+            No encontramos ningún produto
           </Typography>
-          <Typography variant="h2" sx={{ ml: 1 }} textTransform="capitalize" color="secondary">
+          <Typography variant="h2" sx={{ ml: 1 }} color="secondary" textTransform="capitalize">
             {query}
           </Typography>
         </Box>
@@ -52,9 +55,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   }
 
+  // y no hay productos
   let products = await dbProducts.getProductsByTerm(query);
   const foundProducts = products.length > 0;
 
+  // TODO: retornar otros productos
   if (!foundProducts) {
     // products = await dbProducts.getAllProducts();
     products = await dbProducts.getProductsByTerm('shirt');

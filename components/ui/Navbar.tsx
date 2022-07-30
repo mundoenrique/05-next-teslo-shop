@@ -19,11 +19,13 @@ import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-
 import { UiContext } from '../../context';
 
 export const Navbar = () => {
-  const { push, asPath } = useRouter();
-  const { toogleSideMenu } = useContext(UiContext);
+  const { asPath, push } = useRouter();
+  const { toggleSideMenu } = useContext(UiContext);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const onSerachTerm = () => {
+
+  const onSearchTerm = () => {
     if (searchTerm.trim().length === 0) return;
     push(`/search/${searchTerm}`);
   };
@@ -40,7 +42,7 @@ export const Navbar = () => {
 
         <Box flex={1} />
 
-        <Box sx={{ display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' } }} className="fadeIN">
+        <Box sx={{ display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' } }} className="fadeIn">
           <NextLink href="/category/men" passHref>
             <Link>
               <Button color={asPath === '/category/men' ? 'primary' : 'info'}>Hombres</Button>
@@ -60,6 +62,7 @@ export const Navbar = () => {
 
         <Box flex={1} />
 
+        {/* Pantallas pantallas grandes */}
         {isSearchVisible ? (
           <Input
             sx={{ display: { xs: 'none', sm: 'flex' } }}
@@ -67,7 +70,7 @@ export const Navbar = () => {
             autoFocus
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={(e) => (e.key === 'Enter' ? onSerachTerm() : null)}
+            onKeyPress={(e) => (e.key === 'Enter' ? onSearchTerm() : null)}
             type="text"
             placeholder="Buscar..."
             endAdornment={
@@ -88,7 +91,8 @@ export const Navbar = () => {
           </IconButton>
         )}
 
-        <IconButton sx={{ display: { xs: 'flex', sm: 'none' } }} onClick={() => toogleSideMenu()}>
+        {/* Pantallas pequeñas */}
+        <IconButton sx={{ display: { xs: 'flex', sm: 'none' } }} onClick={toggleSideMenu}>
           <SearchOutlined />
         </IconButton>
 
@@ -102,7 +106,7 @@ export const Navbar = () => {
           </Link>
         </NextLink>
 
-        <Button onClick={toogleSideMenu}>Menú</Button>
+        <Button onClick={toggleSideMenu}>Menú</Button>
       </Toolbar>
     </AppBar>
   );
