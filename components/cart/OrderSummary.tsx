@@ -1,10 +1,10 @@
-import { Grid, Typography } from '@mui/material';
 import { useContext } from 'react';
-import { CartContext } from '../../context';
+import { Grid, Typography } from '@mui/material';
+import { CartContext } from '../../context/cart/CartContext';
 import { currency } from '../../utils';
 
 export const OrderSummary = () => {
-  const { numberofItems, subTotal, total, tax } = useContext(CartContext);
+  const { numberOfItems, subTotal, total, tax } = useContext(CartContext);
 
   return (
     <Grid container>
@@ -13,7 +13,7 @@ export const OrderSummary = () => {
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end">
         <Typography>
-          {numberofItems} {numberofItems > 1 ? 'productos' : 'producto'}
+          {numberOfItems} {numberOfItems > 1 ? 'productos' : 'producto'}
         </Typography>
       </Grid>
 

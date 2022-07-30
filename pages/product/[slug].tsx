@@ -1,15 +1,17 @@
 import { useState, useContext } from 'react';
 import { NextPage, GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 
-import { CartContext } from '../../context';
+import { CartContext } from '../../context/cart/CartContext';
+
 import { ShopLayout } from '../../components/layouts';
 import { ProductSlideshow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui/ItemCounter';
 
 import { dbProducts } from '../../database';
-import { ICartProduct, IProduct, ISize } from '../../interfaces';
+import { IProduct, ICartProduct, ISize } from '../../interfaces';
 
 interface Props {
   product: IProduct;
@@ -17,7 +19,8 @@ interface Props {
 
 const ProductPage: NextPage<Props> = ({ product }) => {
   const router = useRouter();
-  const { addProductTocart } = useContext(CartContext);
+  const { addProductToCart } = useContext(CartContext);
+
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     _id: product._id,
     image: product.images[0],
@@ -30,22 +33,25 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   });
 
   const selectedSize = (size: ISize) => {
-    setTempCartProduct((currentProdcut) => ({
-      ...currentProdcut,
+    setTempCartProduct((currentProduct) => ({
+      ...currentProduct,
       size,
     }));
   };
 
-  const onUpdateQuenatity = (quantity: number) => {
-    setTempCartProduct((currentProdcut) => ({
-      ...currentProdcut,
+  const onUpdateQuantity = (quantity: number) => {
+    setTempCartProduct((currentProduct) => ({
+      ...currentProduct,
       quantity,
     }));
   };
 
   const onAddProduct = () => {
-    if (!tempCartProduct.size) return;
-    addProductTocart(tempCartProduct);
+    if (!tempCartProduct.size) {
+      return;
+    }
+
+    addProductToCart(tempCartProduct);
     router.push('/cart');
   };
 
@@ -69,7 +75,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               <Typography variant="subtitle2">Cantidad</Typography>
               <ItemCounter
                 currentValue={tempCartProduct.quantity}
-                updatedQuantity={onUpdateQuenatity}
+                updatedQuantity={onUpdateQuantity}
                 maxValue={product.inStock > 10 ? 10 : product.inStock}
               />
               <SizeSelector
@@ -83,7 +89,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             {/* Agregar al carrito */}
             {product.inStock > 0 ? (
               <Button color="secondary" className="circular-btn" onClick={onAddProduct}>
-                {tempCartProduct.size ? 'Agregar al carrito' : 'Selecina una talla'}
+                {tempCartProduct.size ? 'Agregar al carrito' : 'Seleccione una talla'}
               </Button>
             ) : (
               <Chip label="No hay disponibles" color="error" variant="outlined" />

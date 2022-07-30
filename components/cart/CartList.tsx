@@ -2,6 +2,7 @@ import { FC, useContext } from 'react';
 import NextLink from 'next/link';
 import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
 
+import { initialData } from '../../database/products';
 import { ItemCounter } from '../ui';
 import { CartContext } from '../../context';
 import { ICartProduct } from '../../interfaces';
@@ -12,6 +13,7 @@ interface Props {
 
 export const CartList: FC<Props> = ({ editable = false }) => {
   const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
+
   const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
     product.quantity = newQuantityValue;
     updateCartQuantity(product);
@@ -46,7 +48,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
                 />
               ) : (
                 <Typography variant="h5">
-                  {product.quantity} {product.quantity > 1 ? 'prodcutos' : 'prodcuto'}
+                  {product.quantity} {product.quantity > 1 ? 'productos' : 'producto'}
                 </Typography>
               )}
             </Box>

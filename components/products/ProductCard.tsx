@@ -29,6 +29,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
                   sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
                 />
               )}
+
               <CardMedia
                 component="img"
                 className="fadeIn"
