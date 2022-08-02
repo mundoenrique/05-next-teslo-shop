@@ -1,10 +1,10 @@
 import { FC, useReducer, useEffect } from 'react';
-import Cookie from 'js-cookie';
+import { AuthContext, authReducer } from './';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 import { tesloApi } from '../../api';
 import { IUser } from '../../interfaces';
-import { AuthContext, authReducer } from './';
 
 interface Props {
   children: JSX.Element;
@@ -22,17 +22,19 @@ const AUTH_INITIAL_STATE: AuthState = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+
   useEffect(() => {
     checkToken();
   }, []);
+
   const checkToken = async () => {
     try {
       const { data } = await tesloApi.get('/user/validate-token');
       const { token, user } = data;
-      Cookie.set('token', token);
+      Cookies.set('token', token);
       dispatch({ type: '[Auth] - Login', payload: user });
     } catch (error) {
-      Cookie.remove('token');
+      Cookies.remove('token');
     }
   };
 
@@ -40,9 +42,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     try {
       const { data } = await tesloApi.post('/user/login', { email, password });
       const { token, user } = data;
-      Cookie.set('token', token);
+      Cookies.set('token', token);
       dispatch({ type: '[Auth] - Login', payload: user });
-
       return true;
     } catch (error) {
       return false;
@@ -57,9 +58,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     try {
       const { data } = await tesloApi.post('/user/register', { name, email, password });
       const { token, user } = data;
-      Cookie.set('token', token);
+      Cookies.set('token', token);
       dispatch({ type: '[Auth] - Login', payload: user });
-
       return {
         hasError: false,
       };
@@ -75,7 +75,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
       return {
         hasError: true,
-        message: 'No se pudo crear el usuario intente de nuevo',
+        message: 'No se pudo crear el usuario - intente de nuevo',
       };
     }
   };

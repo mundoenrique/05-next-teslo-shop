@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { resolve } from 'path';
 
 export const signToken = (_id: string, email: string) => {
   if (!process.env.JWT_SECRET_SEED) {
@@ -7,10 +6,10 @@ export const signToken = (_id: string, email: string) => {
   }
 
   return jwt.sign(
-    //payload
+    // payload
     { _id, email },
 
-    // Sedd
+    // Seed
     process.env.JWT_SECRET_SEED,
 
     // Opciones

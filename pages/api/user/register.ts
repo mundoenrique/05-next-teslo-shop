@@ -19,7 +19,7 @@ type Data =
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   switch (req.method) {
     case 'POST':
-      return RegisterUser(req, res);
+      return registerUser(req, res);
 
     default:
       res.status(400).json({
@@ -28,18 +28,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 }
 
-const RegisterUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { email = '', password = '', name = '' } = req.body;
+const registerUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { email = '', password = '', name = '' } = req.body as { email: string; password: string; name: string };
 
   if (password.length < 6) {
     return res.status(400).json({
-      message: 'La contraeña debe ser de 6 caracteres o más',
+      message: 'La contraseña debe de ser de 6 caracteres',
     });
   }
 
   if (name.length < 2) {
     return res.status(400).json({
-      message: 'EL nombre debe ser de dos caracteres ó mas',
+      message: 'El nombre debe de ser de 2 caracteres',
     });
   }
 
@@ -53,8 +53,9 @@ const RegisterUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
   const user = await User.findOne({ email });
 
   if (user) {
-    await db.disconnect();
-    return res.status(400).json({ message: 'No se puede usar ese correo' });
+    return res.status(400).json({
+      message: 'No puede usar ese correo',
+    });
   }
 
   const newUser = new User({
@@ -67,7 +68,6 @@ const RegisterUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
   try {
     await newUser.save({ validateBeforeSave: true });
   } catch (error) {
-    await db.disconnect();
     console.log(error);
     return res.status(500).json({
       message: 'Revisar logs del servidor',
