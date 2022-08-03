@@ -23,7 +23,7 @@ export interface shippingAddress {
   firstName: string;
   lastName: string;
   address: string;
-  address2: string;
+  address2?: string;
   zip: string;
   city: string;
   country: string;
@@ -127,6 +127,18 @@ export const CartProvider: FC<Props> = ({ children }) => {
     dispatch({ type: '[Cart] - Remove product in cart', payload: product });
   };
 
+  const updateAddress = (address: shippingAddress) => {
+    Cookie.set('firstName', address.firstName);
+    Cookie.set('lastName', address.lastName);
+    Cookie.set('address', address.address);
+    Cookie.set('address2', address.address2 || '');
+    Cookie.set('zip', address.zip);
+    Cookie.set('city', address.city);
+    Cookie.set('country', address.country);
+    Cookie.set('phone', address.phone);
+    dispatch({ type: '[Cart] - Update Adress', payload: address });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -135,6 +147,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         // Methods
         addProductToCart,
         removeCartProduct,
+        updateAddress,
         updateCartQuantity,
       }}
     >
