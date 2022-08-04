@@ -23,10 +23,23 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
+  // Custom Pages
+  pages: {
+    signIn: '/auth/login',
+    newUser: '/auth/register',
+  },
+
   // callbacks
+  jwt: {},
+  session: {
+    maxAge: 259200, /// 30d
+    strategy: 'jwt',
+    updateAge: 86400, // cada día
+  },
+
   callbacks: {
     async jwt({ token, account, user }) {
-      console.log({ token, account, user });
+      // console.log({ token, account, user });
       if (account) {
         token.accessToken = account.access_token;
 
