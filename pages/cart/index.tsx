@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 
 import { CartContext } from '../../context';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import { CartList, OrderSummary } from '../../components/cart';
+import { useRouter } from 'next/router';
 
 const CartPage = () => {
   const { isLoaded, cart } = useContext(CartContext);

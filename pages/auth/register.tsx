@@ -19,7 +19,6 @@ type FormData = {
 const RegisterPage = () => {
   const router = useRouter();
   const { registerUser } = useContext(AuthContext);
-  const destination = router.query.p?.toString() || '/';
 
   const {
     register,
@@ -41,6 +40,7 @@ const RegisterPage = () => {
     }
 
     // Todo: navegar a la pantalla que el usuario estaba
+    const destination = router.query.p?.toString() || '/';
     router.replace(destination);
   };
 
@@ -111,7 +111,7 @@ const RegisterPage = () => {
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href={`/auth/login?p=${destination}`} passHref>
+              <NextLink href={router.query.p ? `/auth/login?p=${router.query.p}` : '/auth/login'} passHref>
                 <Link underline="always">¿Ya tienes cuenta?</Link>
               </NextLink>
             </Grid>

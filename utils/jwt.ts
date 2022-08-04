@@ -23,7 +23,7 @@ export const isValidToken = (token: string): Promise<string> => {
   }
 
   if (token.length <= 10) {
-    Promise.reject('JWT no es válido');
+    return Promise.reject('JWT no es válido');
   }
 
   return new Promise((resolve, reject) => {

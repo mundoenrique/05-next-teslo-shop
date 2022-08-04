@@ -16,10 +16,10 @@ export interface CartState {
   tax: number;
   total: number;
 
-  shippingAddress?: shippingAddress;
+  shippingAddress?: ShippingAddress;
 }
 
-export interface shippingAddress {
+export interface ShippingAddress {
   firstName: string;
   lastName: string;
   address: string;
@@ -54,7 +54,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!Cookie.get('firstName')) {
+    if (Cookie.get('firstName')) {
       const shippingAddress = {
         firstName: Cookie.get('firstName') || '',
         lastName: Cookie.get('lastName') || '',
@@ -66,7 +66,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         phone: Cookie.get('phone') || '',
       };
 
-      dispatch({ type: '[Cart] - LoadAddres from Cookies', payload: shippingAddress });
+      dispatch({ type: '[Cart] - LoadAddress from Cookies', payload: shippingAddress });
     }
   }, []);
 
@@ -127,7 +127,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     dispatch({ type: '[Cart] - Remove product in cart', payload: product });
   };
 
-  const updateAddress = (address: shippingAddress) => {
+  const updateAddress = (address: ShippingAddress) => {
     Cookie.set('firstName', address.firstName);
     Cookie.set('lastName', address.lastName);
     Cookie.set('address', address.address);
@@ -136,7 +136,8 @@ export const CartProvider: FC<Props> = ({ children }) => {
     Cookie.set('city', address.city);
     Cookie.set('country', address.country);
     Cookie.set('phone', address.phone);
-    dispatch({ type: '[Cart] - Update Adress', payload: address });
+
+    dispatch({ type: '[Cart] - Update Address', payload: address });
   };
 
   return (
@@ -147,8 +148,8 @@ export const CartProvider: FC<Props> = ({ children }) => {
         // Methods
         addProductToCart,
         removeCartProduct,
-        updateAddress,
         updateCartQuantity,
+        updateAddress,
       }}
     >
       {children}

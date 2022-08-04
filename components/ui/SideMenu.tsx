@@ -32,7 +32,7 @@ import { useRouter } from 'next/router';
 export const SideMenu = () => {
   const router = useRouter();
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
-  const { isLoggedIn, user, logout } = useContext(AuthContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
 
   const [searchTerm, setSearchTerm] = useState('');
 
