@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
-import { getSession, signIn, getProviders } from 'next-auth/react';
+import { signIn, getSession, getProviders } from 'next-auth/react';
 
 import { Box, Button, Chip, Divider, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
@@ -31,6 +31,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     getProviders().then((prov) => {
+      // console.log({prov});
       setProviders(prov);
     });
   }, []);
@@ -39,13 +40,11 @@ const LoginPage = () => {
     setShowError(false);
 
     // const isValidLogin = await loginUser(email, password);
-
     // if (!isValidLogin) {
     //   setShowError(true);
     //   setTimeout(() => setShowError(false), 3000);
     //   return;
     // }
-
     // // Todo: navegar a la pantalla que el usuario estaba
     // const destination = router.query.p?.toString() || '/';
     // router.replace(destination);
@@ -110,10 +109,12 @@ const LoginPage = () => {
                 <Link underline="always">¿No tienes cuenta?</Link>
               </NextLink>
             </Grid>
+
             <Grid item xs={12} display="flex" flexDirection="column" justifyContent="end">
               <Divider sx={{ width: '100%', mb: 2 }} />
               {Object.values(providers).map((provider: any) => {
                 if (provider.id === 'credentials') return <div key="credentials"></div>;
+
                 return (
                   <Button
                     key={provider.id}
@@ -137,8 +138,10 @@ const LoginPage = () => {
 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
+
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
   const session = await getSession({ req });
+  // console.log({session});
 
   const { p = '/' } = query;
 
