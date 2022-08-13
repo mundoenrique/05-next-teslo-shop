@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import * as jose from 'jose';
-
+// import * as jose from 'jose';
+const secret = process.env.NEXTAUTH_SECRET;
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req, secret });
   console.log({ token });
 
   if (!token) {
-    console.error('JWT Invalid or not signed');
     const { protocol, host, pathname } = req.nextUrl;
 
-    // return NextResponse.redirect(`${protocol}//${host}/auth/login?p=${pathname}`);
+    return NextResponse.redirect(`${protocol}//${host}/auth/login?p=${pathname}`);
   }
 
   return NextResponse.next();
