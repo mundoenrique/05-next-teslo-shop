@@ -6,7 +6,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret });
-  console.log({ token });
+  // console.log({ token });
 
   if (!token) {
     const { protocol, host, pathname } = req.nextUrl;
